@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Correct the prediction — Iris classifier{% endblock %}
+
+{% block content %}
+<section class="card">
+
+  <div class="card-head">
+    <h1>What was it really?</h1>
+    <p class="lead">The model guessed <strong>{{ predicted_species }}</strong>.</p>
+  </div>
+
+  <!--
+    ENGINEERING TIP: two forms, one purpose
+    ---------------------------------
+    Both forms below POST to the exact same /feedback route -- the only
+    difference is what value ends up in the "feedback" field. This
+    confirm button skips the correction UI entirely for the common case
+    (the model was right), instead of making the user re-click the
+    matching card by hand. Without this, a correct prediction has no
+    path into the database at all -- that feedback just gets lost,
+    even though it's just as useful for retraining as a correction is.
+  -->
+  <form class="confirm-form" method="post" action="{{ url_for('add_user_feedback') }}">
+    <input type="hidden" name="prediction_id" value="{{ prediction_id }}">
+    <input type="hidden" name="feedback" value="{{ predicted_species }}">
+    <button type="submit" class="btn btn-confirm">
+      Yes, {{ predicted_species }} is correct
+    </button>
+  </form>
+
+  <p class="or-divider"><span>or pick the correct species</span></p>
+
+  <!--
+    ENGINEERING TIP: radio buttons styled as cards, not a <select>
+    ---------------------------------
+    There are only 3 possible species, and they're all equally likely
+    to be the right answer -- that's a great fit for visible radio
+    buttons rather than a hidden dropdown. The user sees every option
+    at a glance instead of having to click to open a <select> menu.
+    Under the hood this is still a totally normal HTML form; the
+    styling in style.css is what makes the <label> look like a card.
+  -->
+  <form class="feedback-form" method="post" action="{{ url_for('add_user_feedback') }}">
+    <input type="hidden" name="prediction_id" value="{{ prediction_id }}">
+
+    <div class="species-choice">
+      <input type="radio" id="opt-setosa" name="feedback" value="setosa" required>
+      <label for="opt-setosa" class="species-card species-setosa">
+        <span class="species-card-name">Setosa</span>
+        <span class="species-card-hint">smallest petals</span>
+      </label>
+
+      <input type="radio" id="opt-versicolor" name="feedback" value="versicolor">
+      <label for="opt-versicolor" class="species-card species-versicolor">
+        <span class="species-card-name">Versicolor</span>
+        <span class="species-card-hint">mid-sized</span>
+      </label>
+
+      <input type="radio" id="opt-virginica" name="feedback" value="virginica">
+      <label for="opt-virginica" class="species-card species-virginica">
+        <span class="species-card-name">Virginica</span>
+        <span class="species-card-hint">largest petals</span>
+      </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit correction</button>
+  </form>
+
+  <a class="skip-link" href="{{ url_for('home') }}">Never mind, go back</a>
+</section>
+{% endblock %}

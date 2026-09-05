@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Result — Iris classifier{% endblock %}
+
+{% block content %}
+<section class="card card-result species-{{ prediction|lower }}">
+
+  <p class="eyebrow">The model predicts</p>
+  <h1 class="species-name">{{ prediction }}</h1>
+
+  <svg class="species-icon" viewBox="0 0 240 170" role="img" aria-label="Iris flower icon">
+    <g class="icon-sepal" stroke-width="1.6">
+      <g transform="rotate(0 120 95)"><ellipse cx="120" cy="48" rx="20" ry="46"/></g>
+      <g transform="rotate(120 120 95)"><ellipse cx="120" cy="48" rx="20" ry="46"/></g>
+      <g transform="rotate(240 120 95)"><ellipse cx="120" cy="48" rx="20" ry="46"/></g>
+    </g>
+    <g class="icon-petal" stroke-width="1.6">
+      <g transform="rotate(60 120 95)"><ellipse cx="120" cy="62" rx="12" ry="30"/></g>
+      <g transform="rotate(180 120 95)"><ellipse cx="120" cy="62" rx="12" ry="30"/></g>
+      <g transform="rotate(300 120 95)"><ellipse cx="120" cy="62" rx="12" ry="30"/></g>
+    </g>
+    <circle cx="120" cy="95" r="6" fill="#F5F6F1" stroke="#2A362F" stroke-width="1.2"/>
+  </svg>
+
+  <!--
+    ENGINEERING TIP: why prediction_id travels with the page
+    ---------------------------------
+    The database row for this specific prediction was created inside
+    predict(). We need that same row's id later if the user tells us
+    the model was wrong, so add_user_feedback() can UPDATE the correct
+    row. Passing prediction_id through render_template(), and printing
+    it into this link's URL, is how that id survives from the /predict
+    request to the next page the user visits.
+  -->
+  <div class="actions">
+    <a class="btn btn-primary" href="{{ url_for('home') }}">Predict another flower</a>
+    <a class="btn btn-secondary" href="{{ url_for('show_feedback_form', prediction_id=prediction_id) }}">
+      Correct Answer
+    </a>
+  </div>
+
+</section>
+{% endblock %}

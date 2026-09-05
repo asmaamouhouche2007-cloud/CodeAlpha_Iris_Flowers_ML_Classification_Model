@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Iris Classifier{% endblock %}</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="brand" href="{{ url_for('home') }}">Iris classifier</a>
+    <span class="site-tag">CodeAlpha · Data Science Internship · Task 3</span>
+  </header>
+
+  <main class="page">
+    <!--
+      ENGINEERING TIP: flash messages
+      ---------------------------------
+      get_flashed_messages(with_categories=true) reads whatever you called
+      flash("message", "category") with in app.py. The category ("success"
+      or "danger") becomes a CSS class below, so success and error messages
+      can look different automatically -- no extra Python logic needed.
+    -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-stack">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}" role="alert">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <p>Built while learning classification &middot; iris dataset &middot; scikit-learn</p>
+  </footer>
+
+
+</body>
+</html>

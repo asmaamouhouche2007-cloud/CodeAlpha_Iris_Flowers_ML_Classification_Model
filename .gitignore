@@ -1,0 +1,42 @@
+# --- 1. SECRETS & API KEYS ---
+.env
+*.env
+
+# --- 2. VIRTUAL ENVIRONMENT ---
+venv/
+env/
+ENV/
+.venv/
+
+# --- 3. PYTHON CACHE & JUNK ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# --- 4. DATA & DATABASES ---
+*.csv
+*.xlsx
+*.db
+*.sqlite
+*.sqlite3
+
+# --- 5. SAVED MODELS ---
+*.pkl
+*.joblib
+*.pt
+*.onnx
+models/
+training_logs/
+
+# --- 6. IDE & SYSTEM FILES ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# --- 7. LOGS & OUTPUT FILES ---
+*.log
+output/

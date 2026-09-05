@@ -1,0 +1,374 @@
+/* ---------------------------------------------------------------
+   DESIGN TOKENS
+   Keeping colors and fonts as CSS custom properties (variables)
+   means every page pulls from the same palette automatically, and
+   changing the whole app's look later is a one-line edit per token
+   instead of a find-and-replace across three HTML files.
+------------------------------------------------------------------ */
+:root{
+  --ink:#26332C;
+  --muted:#5E6B62;
+  --paper:#F5F6F1;
+  --card:#FFFFFF;
+  --line:#DEE1D7;
+
+  --violet:#6C4BA6;   /* setosa */
+  --amber:#B98A2B;    /* versicolor */
+  --forest:#2F6B4F;   /* virginica */
+  --accent:#6C4BA6;
+  --danger:#B23B3B;
+  --danger-bg:#FBEAEA;
+  --success:#2F6B4F;
+  --success-bg:#EAF2ED;
+
+  --font-display:'Lora', Georgia, serif;
+  --font-body:'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+
+  --radius:10px;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-body);
+  line-height:1.55;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ---------------------------------------------------------------
+   HEADER / FOOTER
+------------------------------------------------------------------ */
+.site-header{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:6px 18px;
+  padding:22px 28px;
+  border-bottom:1px solid var(--line);
+}
+.brand{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:20px;
+  color:var(--ink);
+  text-decoration:none;
+}
+.site-tag{
+  font-size:12.5px;
+  color:var(--muted);
+}
+.site-footer{
+  margin-top:auto;
+  padding:20px 28px;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:12.5px;
+}
+
+.page{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:44px 20px 60px;
+}
+
+/* ---------------------------------------------------------------
+   FLASH MESSAGES
+   Fixed to the viewport (not part of normal page flow) so they float
+   above everything, centered horizontally, and don't push or shift
+   the card layout underneath them. Change "top:20px" to "bottom:20px"
+   (and flip flash-hide's translateY sign) to show them at the
+   bottom instead.
+------------------------------------------------------------------ */
+.flash-stack{
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:1000;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  width:100%;
+  max-width:420px;
+  padding:0 20px;
+  pointer-events:none;
+}
+.flash{
+  pointer-events:auto;
+  border-radius:var(--radius);
+  padding:12px 16px;
+  font-size:14px;
+  border:1px solid transparent;
+  box-shadow:0 4px 14px rgba(0,0,0,0.08);
+  animation:flash-lifecycle 3.5s ease-in-out forwards;
+}
+/*
+  Pure CSS auto-dismiss: no JavaScript involved at all.
+  0%   -> invisible, shifted up
+  8%   -> fully visible, in place (quick fade-in)
+  85%  -> still fully visible (this is the ~3s "hold" period)
+  100% -> invisible again, shifted up (fade-out)
+  "forwards" keeps the element at its 100% state (invisible) once
+  the animation finishes, instead of snapping back to 0%.
+*/
+@keyframes flash-lifecycle{
+  0%   { opacity:0; transform:translateY(-12px); }
+  8%   { opacity:1; transform:translateY(0); }
+  85%  { opacity:1; transform:translateY(0); }
+  100% { opacity:0; transform:translateY(-12px); }
+}
+.flash-danger{background:var(--danger-bg);color:var(--danger);border-color:#f0c6c6;}
+.flash-success{background:var(--success-bg);color:var(--success);border-color:#c9e0d2;}
+
+/* ---------------------------------------------------------------
+   CARD
+------------------------------------------------------------------ */
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:36px 34px 32px;
+  width:100%;
+  max-width:520px;
+  height:fit-content;
+}
+.card-head h1{
+  font-family:var(--font-display);
+  font-size:26px;
+  font-weight:600;
+  margin:0 0 6px;
+}
+.card-head .lead{
+  color:var(--muted);
+  font-size:14.5px;
+  margin:0 0 20px;
+  max-width:60ch;
+}
+
+/* ---------------------------------------------------------------
+   FLOWER LEGEND DIAGRAM (index page)
+------------------------------------------------------------------ */
+.flower-legend{margin:6px 0 26px;text-align:center;}
+.flower-legend svg{width:150px;height:auto;}
+.legend-key{
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  flex-wrap:wrap;
+  font-size:12.5px;
+  color:var(--muted);
+  margin-top:4px;
+}
+.legend-key span{display:inline-flex;align-items:center;gap:6px;}
+.swatch{
+  width:10px;height:10px;border-radius:50%;display:inline-block;
+}
+.swatch-sepal{background:var(--forest);}
+.swatch-petal{background:var(--violet);}
+
+/* ---------------------------------------------------------------
+   FORM (index page)
+------------------------------------------------------------------ */
+.measure-form fieldset{
+  border:none;
+  padding:0;
+  margin:0 0 22px;
+}
+.measure-form legend{
+  font-family:var(--font-display);
+  font-size:15px;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:10px;
+  padding:0;
+}
+.field-row{display:flex;gap:14px;}
+.field{flex:1;}
+.field label{
+  display:block;
+  font-size:12.5px;
+  color:var(--muted);
+  margin-bottom:5px;
+}
+.input-unit{
+  display:flex;
+  align-items:center;
+  border:1px solid var(--line);
+  border-radius:8px;
+  overflow:hidden;
+  background:var(--paper);
+}
+.input-unit input{
+  flex:1;
+  border:none;
+  background:transparent;
+  padding:10px 4px 10px 12px;
+  font-size:15px;
+  font-family:var(--font-body);
+  color:var(--ink);
+  min-width:0;
+}
+.input-unit input:focus{outline:none;}
+.input-unit:focus-within{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(108,75,166,0.12);
+}
+.input-unit .unit{
+  padding:0 12px;
+  font-size:12.5px;
+  color:var(--muted);
+}
+/* remove default number spinner for a cleaner "measurement field" look */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button{ -webkit-appearance:none; margin:0; }
+input[type=number]{ -moz-appearance:textfield; }
+
+/* ---------------------------------------------------------------
+   BUTTONS
+------------------------------------------------------------------ */
+.btn{
+  display:inline-block;
+  border-radius:8px;
+  padding:12px 20px;
+  font-family:var(--font-body);
+  font-size:14.5px;
+  font-weight:600;
+  text-decoration:none;
+  border:1px solid transparent;
+  cursor:pointer;
+  text-align:center;
+}
+.btn-primary{
+  background:var(--accent);
+  color:#fff;
+  width:100%;
+}
+.btn-primary:hover{background:#5a3d8d;}
+.btn-secondary{
+  background:transparent;
+  color:var(--ink);
+  border-color:var(--line);
+}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+/* ---------------------------------------------------------------
+   FEEDBACK PAGE — confirm button + divider
+------------------------------------------------------------------ */
+.confirm-form{margin-bottom:18px;}
+.btn-confirm{
+  background:var(--success-bg);
+  color:var(--success);
+  border:1.5px solid #c9e0d2;
+  width:100%;
+}
+.btn-confirm:hover{background:#dcefe3;}
+
+.or-divider{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:var(--muted);
+  font-size:12.5px;
+  margin:0 0 16px;
+}
+.or-divider::before,
+.or-divider::after{
+  content:"";
+  flex:1;
+  height:1px;
+  background:var(--line);
+}
+
+/* ---------------------------------------------------------------
+   RESULT PAGE
+------------------------------------------------------------------ */
+.card-result{text-align:center;}
+.eyebrow{color:var(--muted);font-size:13px;margin:0 0 4px;}
+.species-name{
+  font-family:var(--font-display);
+  font-size:36px;
+  font-weight:600;
+  margin:0 0 18px;
+  text-transform:capitalize;
+}
+.species-icon{width:150px;height:auto;margin:0 auto 26px;display:block;}
+.species-icon .icon-sepal{stroke:var(--forest);fill:rgba(47,107,79,0.10);}
+.species-icon .icon-petal{stroke:var(--muted);fill:rgba(0,0,0,0.05);}
+
+.species-setosa .species-name{color:var(--violet);}
+.species-setosa .icon-petal{stroke:var(--violet);fill:rgba(108,75,166,0.14);}
+.species-versicolor .species-name{color:var(--amber);}
+.species-versicolor .icon-petal{stroke:var(--amber);fill:rgba(185,138,43,0.14);}
+.species-virginica .species-name{color:var(--forest);}
+.species-virginica .icon-petal{stroke:var(--forest);fill:rgba(47,107,79,0.18);}
+
+.actions{display:flex;flex-direction:column;gap:10px;max-width:320px;margin:0 auto;}
+
+/* ---------------------------------------------------------------
+   FEEDBACK PAGE
+------------------------------------------------------------------ */
+.species-choice{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:10px;
+  margin:20px 0 24px;
+}
+.species-choice input[type=radio]{
+  position:absolute;
+  opacity:0;
+  width:1px;height:1px;
+}
+.species-card{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  padding:16px 8px;
+  border:1.5px solid var(--line);
+  border-radius:10px;
+  cursor:pointer;
+  text-align:center;
+}
+.species-card-name{font-weight:600;font-size:14px;}
+.species-card-hint{font-size:11.5px;color:var(--muted);}
+.species-choice input:checked + .species-card{
+  border-color:var(--accent);
+  background:rgba(108,75,166,0.06);
+}
+.species-choice input:focus-visible + .species-card{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+.skip-link{
+  display:block;
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+  margin-top:14px;
+}
+
+/* ---------------------------------------------------------------
+   ACCESSIBILITY / MOTION
+------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important;}
+}
+
+/* ---------------------------------------------------------------
+   RESPONSIVE
+------------------------------------------------------------------ */
+@media (max-width:480px){
+  .card{padding:26px 20px 24px;}
+  .field-row{flex-direction:column;gap:14px;}
+  .species-choice{grid-template-columns:1fr;}
+}
